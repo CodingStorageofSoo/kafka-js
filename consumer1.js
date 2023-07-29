@@ -27,9 +27,7 @@ const consumeMessage = async (consumer) => {
     await consumer.run({
       eachMessage: async ({ message }) => {
         const data = JSON.parse(message.value.toString());
-        const winnder = data.ranking[0];
         console.log(data);
-        console.log(winnder);
       },
     });
   } catch (error) {
