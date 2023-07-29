@@ -23,6 +23,8 @@ app.post("/send-to-kafka", async (req, res) => {
   try {
     const message = req.body;
 
+    console.log(message);
+
     await producer.connect();
 
     await producer.send({
@@ -45,7 +47,7 @@ app.post("/send-to-kafka", async (req, res) => {
 });
 
 // KAFKAJS_NO_PARTITIONER_WARNING=1 node producer.js
-const PORT = 3000;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

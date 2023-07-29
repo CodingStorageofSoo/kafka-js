@@ -26,11 +26,10 @@ const consumeMessage = async (consumer) => {
     // Start consuming messages
     await consumer.run({
       eachMessage: async ({ message }) => {
-        console.log(
-          `Consumer: ${
-            consumer.groupId
-          }, Received message: ${message.value.toString()}`
-        );
+        const data = JSON.parse(message.value.toString());
+        const winnder = data.ranking[0];
+        console.log(data);
+        console.log(winnder);
       },
     });
   } catch (error) {
