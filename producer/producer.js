@@ -1,18 +1,15 @@
-// npm i express
+require("dotenv").config();
+const { TOPIC, KAFKA_PORT, PRODUCE_PORT } = process.env;
+
 const express = require("express");
 const app = express();
 app.use(express.json());
 
-// npm i kafkajs
-// bin/zookeeper-server-start.sh config/zookeeper.properties
-// bin/kafka-server-start.sh config/server.properties
-// bin/kafka-topics.sh --create --topic test-topic --bootstrap-server=localhost:9092
-// bin/kafka-topics.sh --list --bootstrap-server localhost:9092
 const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({
   clientId: "my-kafka-app",
-  brokers: ["localhost:9092"],
+  brokers: [`localhost:${KAFKA_PORT}`],
 });
 
 const topic = "test-topic";
@@ -47,7 +44,6 @@ app.post("/send-to-kafka", async (req, res) => {
 });
 
 // KAFKAJS_NO_PARTITIONER_WARNING=1 node producer.js
-const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+app.listen(PRODUCE_PORT, () => {
+  console.log(`Server listening on port ${PRODUCE_PORT}`);
 });

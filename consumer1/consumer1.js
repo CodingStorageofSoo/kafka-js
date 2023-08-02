@@ -1,17 +1,17 @@
+require("dotenv").config();
+const { TOPIC } = process.env;
+
 const { Kafka, logLevel } = require("kafkajs");
 
 // Replace 'localhost:9092' with your Kafka broker address
 const kafka = new Kafka({
   clientId: "my-kafka-app",
-  brokers: ["localhost:9092"],
+  brokers: [`localhost:${KAFKA_PORT}`],
 });
 
-// Topic from which messages will be consumed
-const topic = "test-topic";
-
-// Create the second consumer instance with logLevel set to "WARN"
-const consumer2 = kafka.consumer({
-  groupId: "consumer-group-2",
+// Create the first consumer instance with logLevel set to "WARN"
+const consumer1 = kafka.consumer({
+  groupId: "consumer-group-1",
   logLevel: logLevel.WARN,
 });
 
@@ -21,7 +21,7 @@ const consumeMessage = async (consumer) => {
     await consumer.connect();
 
     // Subscribe to the Kafka topic
-    await consumer.subscribe({ topic: topic });
+    await consumer.subscribe({ topic: TOPIC });
 
     // Start consuming messages
     await consumer.run({
@@ -36,4 +36,4 @@ const consumeMessage = async (consumer) => {
 };
 
 // Start consuming messages for both consumers
-consumeMessage(consumer2);
+consumeMessage(consumer1);
