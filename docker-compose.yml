@@ -16,11 +16,7 @@ services:
     command:
       - bash
       - -c
-      - |
-        (echo "Waiting for Kafka to come up..." && \
-        sleep 30 && \
-        kafka-topics --create --topic ${TOPIC} --bootstrap-server=localhost:9092 \
-        ) & /etc/confluent/docker/run
+      - kafka-topics --create --topic ${TOPIC} --bootstrap-server=${KAFKA_BROKER}
 
   producer:
     build: ./producer # Make sure Dockerfile and code for producer is in /producer directory
