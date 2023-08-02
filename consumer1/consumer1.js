@@ -1,12 +1,11 @@
 require("dotenv").config();
-const { TOPIC } = process.env;
+const { TOPIC, KAFKA_ID, KAFKA_BROKER } = process.env;
 
 const { Kafka, logLevel } = require("kafkajs");
 
-// Replace 'localhost:9092' with your Kafka broker address
 const kafka = new Kafka({
-  clientId: "my-kafka-app",
-  brokers: [`localhost:${KAFKA_PORT}`],
+  clientId: KAFKA_ID,
+  brokers: [KAFKA_BROKER],
 });
 
 // Create the first consumer instance with logLevel set to "WARN"

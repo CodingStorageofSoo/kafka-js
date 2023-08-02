@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { TOPIC, KAFKA_PORT, PRODUCE_PORT } = process.env;
+const { TOPIC, KAFKA_ID, KAFKA_BROKER, PRODUCE_PORT } = process.env;
 
 const express = require("express");
 const app = express();
@@ -8,11 +8,9 @@ app.use(express.json());
 const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({
-  clientId: "my-kafka-app",
-  brokers: [`localhost:${KAFKA_PORT}`],
+  clientId: KAFKA_ID,
+  brokers: [KAFKA_BROKER],
 });
-
-const topic = "test-topic";
 
 const producer = kafka.producer();
 
@@ -25,7 +23,7 @@ app.post("/send-to-kafka", async (req, res) => {
     await producer.connect();
 
     await producer.send({
-      topic: topic,
+      topic: TOPIC,
       messages: [{ value: JSON.stringify(message) }],
     });
 
