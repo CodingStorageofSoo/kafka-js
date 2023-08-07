@@ -1,11 +1,11 @@
 FROM node:20-alpine
 
-WORKDIR /app/consumer2
+WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json /app
 
 RUN npm ci
 
-COPY consumer2.js ./
+COPY consumer2.js /app
 
 CMD ["node", "consumer2.js"]

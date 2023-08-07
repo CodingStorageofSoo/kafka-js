@@ -1,6 +1,3 @@
-require("dotenv").config();
-const { TOPIC, KAFKA_ID, KAFKA_BROKER, PRODUCE_PORT } = process.env;
-
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -8,11 +5,15 @@ app.use(express.json());
 const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({
-  clientId: KAFKA_ID,
-  brokers: [KAFKA_BROKER],
+  clientId: "my-kafka-app",
+  brokers: ["kafka:9092"],
 });
 
 const producer = kafka.producer();
+
+app.get("/", (req, res) => {
+  res.json({ succ: "connected" });
+});
 
 app.post("/send-to-kafka", async (req, res) => {
   try {
@@ -23,7 +24,7 @@ app.post("/send-to-kafka", async (req, res) => {
     await producer.connect();
 
     await producer.send({
-      topic: TOPIC,
+      topic: "topic_name",
       messages: [{ value: JSON.stringify(message) }],
     });
 
@@ -42,6 +43,6 @@ app.post("/send-to-kafka", async (req, res) => {
 });
 
 // KAFKAJS_NO_PARTITIONER_WARNING=1 node producer.js
-app.listen(PRODUCE_PORT, () => {
-  console.log(`Server listening on port ${PRODUCE_PORT}`);
+app.listen(3000, () => {
+  console.log(`Server listening on port 3000`);
 });

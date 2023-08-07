@@ -1,11 +1,8 @@
-require("dotenv").config();
-const { TOPIC, KAFKA_ID, KAFKA_BROKER } = process.env;
-
 const { Kafka, logLevel } = require("kafkajs");
 
 const kafka = new Kafka({
-  clientId: KAFKA_ID,
-  brokers: [KAFKA_BROKER],
+  clientId: "my-kafka-app",
+  brokers: ["kafka:9092"],
 });
 
 // Create the first consumer instance with logLevel set to "WARN"
@@ -20,7 +17,7 @@ const consumeMessage = async (consumer) => {
     await consumer.connect();
 
     // Subscribe to the Kafka topic
-    await consumer.subscribe({ topic: TOPIC });
+    await consumer.subscribe({ topic: "topic_name" });
 
     // Start consuming messages
     await consumer.run({
